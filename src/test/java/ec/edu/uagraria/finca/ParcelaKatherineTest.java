@@ -3,8 +3,7 @@ package ec.edu.uagraria.finca;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-
-class ParcelakatherineTest {
+class ParcelaKatherineTest {
 
     @Test
     void mediaHectareaSonCincoMilMetros() {
@@ -13,4 +12,3 @@ class ParcelakatherineTest {
         assertEquals(5_000.0, parcela.areaEnMetrosCuadrados(), 0.001);
     }
 }
-
