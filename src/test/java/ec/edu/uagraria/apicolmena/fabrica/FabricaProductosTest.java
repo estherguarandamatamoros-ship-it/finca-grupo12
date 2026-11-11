@@ -97,4 +97,70 @@ void noDebeCrearInsumoConPrecioNegativo() {
     );
 }
 
+    @Test
+    void debeCrearFloracionConNuevaFabrica() {
+        Floracion floracion = (Floracion) FabricaProductos.crear(
+                TipoProducto.FLORACION,
+                new DatosFloracion(
+                        "Floracion de girasol",
+                        "Girasol",
+                        LocalDate.of(2026, 11, 1),
+                        LocalDate.of(2026, 11, 30),
+                        85
+                )
+        );
+
+        assertNotNull(floracion);
+        assertEquals("Girasol", floracion.especieVegetal());
+    }
+
+    @Test
+    void debeCrearColmenaConCodigoAutomatico() {
+        Colmena colmena = (Colmena) FabricaProductos.crear(
+                TipoProducto.COLMENA,
+                new DatosColmena(
+                        "Sector norte",
+                        2.5,
+                        LocalDate.now(),
+                        25,
+                        30
+                )
+        );
+
+        assertNotNull(colmena.codigo());
+        assertTrue(colmena.codigo().startsWith("COLMENA-"));
+    }
+
+    @Test
+    void debeCrearInsumoConCodigoAutomatico() {
+        InsumoApicola insumo = (InsumoApicola) FabricaProductos.crear(
+                TipoProducto.INSUMO_APICOLA,
+                new DatosInsumoApicola(
+                        "Alimento para abejas",
+                        10,
+                        "kg",
+                        2.50
+                )
+        );
+
+        assertNotNull(insumo.codigo());
+        assertTrue(insumo.codigo().startsWith("INSUMO-"));
+    }
+
+    @Test
+    void noDebeAceptarDatosDeTipoIncorrecto() {
+        assertThrows(IllegalArgumentException.class, () ->
+                FabricaProductos.crear(
+                        TipoProducto.COLMENA,
+                        new DatosFloracion(
+                                "Floracion de mango",
+                                "Mango",
+                                LocalDate.of(2026, 11, 1),
+                                LocalDate.of(2026, 11, 30),
+                                80
+                        )
+                )
+        );
+    }
+
 }

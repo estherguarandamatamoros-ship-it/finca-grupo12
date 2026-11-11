@@ -20,7 +20,7 @@ public class MotorAlertas {
         reglas.add(regla);
     }
 
-    public void agregarObservador(ObservadorAlerta observador) {
+    public void suscribir(ObservadorAlerta observador) {
         if (observador == null) {
             throw new IllegalArgumentException("El observador no puede ser nulo");
         }
@@ -28,6 +28,11 @@ public class MotorAlertas {
         if (!observadores.contains(observador)) {
             observadores.add(observador);
         }
+    }
+
+    public void agregarObservador(ObservadorAlerta observador) {
+        suscribir(observador);
+
     }
 
     public void eliminarObservador(ObservadorAlerta observador) {

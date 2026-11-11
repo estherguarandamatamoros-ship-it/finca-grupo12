@@ -24,9 +24,9 @@ class ReglasAlertaTest {
     }
 
     @Test
-    void varroaIgualAlUmbralGeneraAlerta() {
+    void varroaMayorAlUmbralGeneraAlerta() {
         Colmena colmena = crearColmena(
-                3.0, fechaEvaluacion.minusDays(5), 10, 12
+                3.1, fechaEvaluacion.minusDays(5), 10, 12
         );
 
         ReglaVarroaAlta regla = new ReglaVarroaAlta();
@@ -34,6 +34,17 @@ class ReglasAlertaTest {
         assertTrue(regla.debeGenerarAlerta(colmena, fechaEvaluacion));
         assertEquals("VARROA_ALTA", regla.obtenerTipoAlerta());
         assertTrue(regla.generarMensaje(colmena).contains("COL-001"));
+    }
+
+    @Test
+    void varroaIgualAlUmbralNoGeneraAlerta() {
+        Colmena colmena = crearColmena(
+                3.0, fechaEvaluacion.minusDays(5), 10, 12
+        );
+
+        ReglaVarroaAlta regla = new ReglaVarroaAlta();
+
+        assertFalse(regla.debeGenerarAlerta(colmena, fechaEvaluacion));
     }
 
     @Test
@@ -60,9 +71,20 @@ class ReglasAlertaTest {
     }
 
     @Test
-    void caidaDelVeintePorCientoGeneraAlerta() {
+    void caidaExactamenteDelVeintePorCientoNoGeneraAlerta() {
         Colmena colmena = crearColmena(
                 2.0, fechaEvaluacion.minusDays(5), 8, 10
+        );
+
+        ReglaCaidaRendimiento regla = new ReglaCaidaRendimiento();
+
+        assertFalse(regla.debeGenerarAlerta(colmena, fechaEvaluacion));
+    }
+
+    @Test
+    void caidaMayorAlVeintePorCientoGeneraAlerta() {
+        Colmena colmena = crearColmena(
+                2.0, fechaEvaluacion.minusDays(5), 7.9, 10
         );
 
         ReglaCaidaRendimiento regla = new ReglaCaidaRendimiento();
