@@ -6,7 +6,23 @@ import java.time.LocalDate;
 
 public class ReglaCaidaRendimiento implements ReglaAlerta {
 
-    private static final double UMBRAL_CAIDA = 20.0;
+    private final ConfiguracionAlertas configuracion;
+
+    public ReglaCaidaRendimiento() {
+        this(ConfiguracionAlertas.PREDETERMINADA);
+    }
+
+    public ReglaCaidaRendimiento(
+            ConfiguracionAlertas configuracion
+    ) {
+        if (configuracion == null) {
+            throw new IllegalArgumentException(
+                    "La configuracion no puede ser nula"
+            );
+        }
+
+        this.configuracion = configuracion;
+    }
 
     @Override
     public boolean debeGenerarAlerta(
@@ -30,7 +46,7 @@ public class ReglaCaidaRendimiento implements ReglaAlerta {
                         / rendimientoAnterior
         ) * 100;
 
-        return caida >= UMBRAL_CAIDA;
+        return caida > configuracion.umbralCaidaRendimiento();
     }
 
     @Override

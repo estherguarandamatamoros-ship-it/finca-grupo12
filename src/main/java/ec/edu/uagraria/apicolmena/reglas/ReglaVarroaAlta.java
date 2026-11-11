@@ -6,7 +6,21 @@ import java.time.LocalDate;
 
 public class ReglaVarroaAlta implements ReglaAlerta {
 
-    private static final double UMBRAL_VARROA = 3.0;
+    private final ConfiguracionAlertas configuracion;
+
+    public ReglaVarroaAlta() {
+        this(ConfiguracionAlertas.PREDETERMINADA);
+    }
+
+    public ReglaVarroaAlta(ConfiguracionAlertas configuracion) {
+        if (configuracion == null) {
+            throw new IllegalArgumentException(
+                    "La configuracion no puede ser nula"
+            );
+        }
+
+        this.configuracion = configuracion;
+    }
 
     @Override
     public boolean debeGenerarAlerta(
@@ -19,7 +33,8 @@ public class ReglaVarroaAlta implements ReglaAlerta {
             );
         }
 
-        return colmena.porcentajeVarroa() >= UMBRAL_VARROA;
+        return colmena.porcentajeVarroa()
+                > configuracion.umbralVarroa();
     }
 
     @Override

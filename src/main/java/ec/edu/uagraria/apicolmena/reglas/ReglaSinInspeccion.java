@@ -1,3 +1,4 @@
+
 package ec.edu.uagraria.apicolmena.reglas;
 
 import ec.edu.uagraria.apicolmena.dominio.Colmena;
@@ -7,7 +8,21 @@ import java.time.temporal.ChronoUnit;
 
 public class ReglaSinInspeccion implements ReglaAlerta {
 
-    private static final long DIAS_MAXIMOS = 30;
+    private final ConfiguracionAlertas configuracion;
+
+    public ReglaSinInspeccion() {
+        this(ConfiguracionAlertas.PREDETERMINADA);
+    }
+
+    public ReglaSinInspeccion(ConfiguracionAlertas configuracion) {
+        if (configuracion == null) {
+            throw new IllegalArgumentException(
+                    "La configuracion no puede ser nula"
+            );
+        }
+
+        this.configuracion = configuracion;
+    }
 
     @Override
     public boolean debeGenerarAlerta(
@@ -25,7 +40,8 @@ public class ReglaSinInspeccion implements ReglaAlerta {
                 fechaEvaluacion
         );
 
-        return diasTranscurridos > DIAS_MAXIMOS;
+        return diasTranscurridos
+                > configuracion.diasMaximosSinInspeccion();
     }
 
     @Override
@@ -36,6 +52,8 @@ public class ReglaSinInspeccion implements ReglaAlerta {
     @Override
     public String generarMensaje(Colmena colmena) {
         return "Alerta: la colmena " + colmena.codigo()
-                + " lleva mas de 30 dias sin inspeccion";
+                + " lleva mas de "
+                + configuracion.diasMaximosSinInspeccion()
+                + " dias sin inspeccion";
     }
 }
